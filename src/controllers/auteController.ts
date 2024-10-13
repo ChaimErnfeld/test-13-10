@@ -74,6 +74,8 @@ export const registerStudent = async (req: Request, res: Response): Promise<void
     });
     user.classrooms.push(result._id);
     await user.save();
+    result.students!.push(user._id.toString());
+    await result.save();
     res.status(200).json({ data: user, success: true });
   } catch (error) {
     res.status(500).json({ message: error, success: false });

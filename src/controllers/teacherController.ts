@@ -52,11 +52,6 @@ export const getStudents = async (req: Request, res: Response): Promise<void> =>
 
     const teacher = await User.findById(decoded.id);
 
-    // if (!teacher) {
-    //   res.status(404).json({ message: "Teacher not found", success: false });
-    //   return;
-    // }
-
     const classroom = await Classroom.findById(teacher!.classrooms[0]);
 
     const details = await classroom?.students;
