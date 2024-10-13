@@ -61,3 +61,31 @@ export const getStudents = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ message: error, success: false });
   }
 };
+
+export const editGrade = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { studentName, gradeId, newGrade } = req.body;
+
+    const student = await User.findOne({ username: studentName });
+
+    if (!student) {
+      res.status(404).json({ message: "Student not found" });
+      return;
+    }
+
+    const changeGrade = student.grades!.findIndex((g) => g._id.toString() === gradeId);
+
+    if (changeGrade === -1) {
+      res.status(404).json({ message: "Grade not found" });
+      return;
+    }
+
+    student.grades![changeGrade!].grade = newGrade;
+
+    await student.save();
+
+    res.status(200).json({ message: "changed Grade", student });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to change grade", error: error });
+  }
+};
