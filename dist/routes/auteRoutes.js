@@ -1,11 +1,8 @@
-import { Router } from "express";
-import { addGrade, getStudents, editGrade } from "../controllers/teacherController";
-import { registerTeacher } from "../controllers/auteController";
-
-import { isTeacher } from "../middleware/isTeacher";
-
-const teacherRouter = Router();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auteController_1 = require("../controllers/auteController");
+const auteRouter = (0, express_1.Router)();
 /**
  * @swagger
  * /api/teachers/registerTeacher:
@@ -32,12 +29,12 @@ const teacherRouter = Router();
  *       400:
  *         description: Cannot add grade to this classroom
  */
-teacherRouter.post("/register", registerTeacher);
+auteRouter.post("/registerTeacher", auteController_1.registerTeacher);
 /**
  * @swagger
- * /api/teachers/grades:
+ * /api/teachers/registerStudent:
  *   post:
- *     summary: Add a grade
+ *     summary: Register a student
  *     requestBody:
  *       required: true
  *       content:
@@ -45,13 +42,13 @@ teacherRouter.post("/register", registerTeacher);
  *           schema:
  *             type: object
  *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *               classroom:
- *                 type: string
- *               studentId:
- *                 type: string
- *               grade:
- *                 type: number
- *               comment:
  *                 type: string
  *     responses:
  *       200:
@@ -59,24 +56,12 @@ teacherRouter.post("/register", registerTeacher);
  *       400:
  *         description: Cannot add grade to this classroom
  */
-teacherRouter.post("/grade", isTeacher, addGrade);
-
+auteRouter.post("/registerStudent", auteController_1.registerStudent);
 /**
  * @swagger
- * /api/teachers//:
- *   get:
- *     summary: Get students
- *     responses:
- *       200:
- *         description: List of students
- */
-teacherRouter.get("/", getStudents);
-
-/**
- * @swagger
- * /api/teachers//grade:
- *   put:
- *     summary: Edit a grade
+ * /api/teachers/login:
+ *   post:
+ *     summary: login
  *     requestBody:
  *       required: true
  *       content:
@@ -84,18 +69,15 @@ teacherRouter.get("/", getStudents);
  *           schema:
  *             type: object
  *             properties:
- *               studentName:
+ *               email:
  *                 type: string
- *               gradeId:
+ *               password:
  *                 type: string
- *               newGrade:
- *                 type: number
  *     responses:
  *       200:
- *         description: Grade changed successfully
- *       404:
- *         description: Student or Grade not found
+ *         description: Grade added successfully
+ *       400:
+ *         description: Cannot add grade to this classroom
  */
-teacherRouter.put("/grade", isTeacher, editGrade);
-
-export default teacherRouter;
+auteRouter.post("/login", auteController_1.login);
+exports.default = auteRouter;

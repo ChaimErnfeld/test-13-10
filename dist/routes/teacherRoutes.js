@@ -1,38 +1,9 @@
-import { Router } from "express";
-import { addGrade, getStudents, editGrade } from "../controllers/teacherController";
-import { registerTeacher } from "../controllers/auteController";
-
-import { isTeacher } from "../middleware/isTeacher";
-
-const teacherRouter = Router();
-
-/**
- * @swagger
- * /api/teachers/registerTeacher:
- *   post:
- *     summary: Register a teacher
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               classroom:
- *                 type: string
- *     responses:
- *       200:
- *         description: Grade added successfully
- *       400:
- *         description: Cannot add grade to this classroom
- */
-teacherRouter.post("/register", registerTeacher);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const teacherController_1 = require("../controllers/teacherController");
+const isTeacher_1 = require("../middleware/isTeacher");
+const teacherRouter = (0, express_1.Router)();
 /**
  * @swagger
  * /api/teachers/grades:
@@ -59,8 +30,7 @@ teacherRouter.post("/register", registerTeacher);
  *       400:
  *         description: Cannot add grade to this classroom
  */
-teacherRouter.post("/grade", isTeacher, addGrade);
-
+teacherRouter.post("/grade", isTeacher_1.isTeacher, teacherController_1.addGrade);
 /**
  * @swagger
  * /api/teachers//:
@@ -70,8 +40,7 @@ teacherRouter.post("/grade", isTeacher, addGrade);
  *       200:
  *         description: List of students
  */
-teacherRouter.get("/", getStudents);
-
+teacherRouter.get("/", teacherController_1.getStudents);
 /**
  * @swagger
  * /api/teachers//grade:
@@ -96,6 +65,5 @@ teacherRouter.get("/", getStudents);
  *       404:
  *         description: Student or Grade not found
  */
-teacherRouter.put("/grade", isTeacher, editGrade);
-
-export default teacherRouter;
+teacherRouter.put("/grade", teacherController_1.editGrade);
+exports.default = teacherRouter;
