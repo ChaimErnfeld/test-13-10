@@ -7,11 +7,12 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  grades?: Types.ObjectId[];
+  grades?: IGrade[];
   role: string;
+  classrooms: Types.ObjectId[];
 }
 
-export interface IGrade extends Document {
+export interface IGrade {
   _id: Types.ObjectId;
   grade: number;
   comment: string;
@@ -45,12 +46,18 @@ const UserSchema = new Schema<IUser>({
     unique: true,
     validate: validator.isEmail,
   },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [6, "Password must be at least 6 chars long"],
+  },
   grades: [gradeSchema],
   role: {
     type: String,
     required: [true, "Please enter a username"],
     enum: ["student", "teacher"],
   },
+  classrooms: [{ type: Schema.Types.ObjectId, ref: "Classroom" }],
 });
 
 export default mongoose.model<IUser>("User", UserSchema);

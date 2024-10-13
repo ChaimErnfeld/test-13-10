@@ -5,7 +5,7 @@ export interface IClassroom extends Document {
   _id: Types.ObjectId;
   name: string;
   teacher: string;
-  students: string[];
+  students?: string[];
 }
 
 const ClassroomSchema = new Schema({
@@ -14,4 +14,4 @@ const ClassroomSchema = new Schema({
   students: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
-export const Classroom = mongoose.model<IClassroom>("Classroom", ClassroomSchema);
+export default mongoose.model<IClassroom>("Classroom", ClassroomSchema);
